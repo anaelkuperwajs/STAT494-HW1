@@ -34,22 +34,20 @@ Read the [Quick Intro](https://advanced-ds-in-r.netlify.app/posts/2021-01-28-git
 **Task**: Below, post a link to your GitHub repository.
 https://github.com/anaelkuperwajs/STAT494-HW1
 
-Test edit
-
 ## Creating a website
 
-You'll be using RStudio to create a personal website to showcase your work from this class! Start by watching the [Sharing on Short Notice](https://rstudio.com/resources/webinars/sharing-on-short-notice-how-to-get-your-materials-online-with-r-markdown/) webinar by Alison Hill and Desirée De Leon of RStudio. This should help you choose the type of website you'd like to create. 
+You'll be using RStudio to create a personal website to showcase your work from this class! Start by watching the [Sharing on Short Notice](https://rstudio.com/resources/webinars/sharing-on-short-notice-how-to-get-your-materials-online-with-r-markdown/) webinar by Alison Hill and Desirée De Leon of RStudio. This should help you choose the type of website you'd like to create.
 
-Once you've chosen that, you might want to look through some of the other *Building a website* resources I posted on the [resources page](https://advanced-ds-in-r.netlify.app/resources.html) of our course website. I highly recommend making a nice landing page where you give a brief introduction of yourself. 
+Once you've chosen that, you might want to look through some of the other *Building a website* resources I posted on the [resources page](https://advanced-ds-in-r.netlify.app/resources.html) of our course website. I highly recommend making a nice landing page where you give a brief introduction of yourself.
 
 
 **Tasks**:
 
 * Include a link to your website below. (If anyone does not want to post a website publicly, please talk to me and we will find a different solution).  
 
-* Listen to at least the first 20 minutes of "Building a Career in Data Science, Chapter 4: Building a Portfolio". Go to the main [podcast website](https://podcast.bestbook.cool/) and navigate to a podcast provider that works for you to find that specific episode. Write 2-3 sentences reflecting on what they discussed and why creating a website might be helpful for you.  
+* Listen to at least the first 20 minutes of "Building a Career in Data Science, Chapter 4: Building a Portfolio". Go to the main [podcast website](https://podcast.bestbook.cool/) and navigate to a podcast provider that works for you to find that specific episode. Write 2-3 sentences reflecting on what they discussed and why creating a website might be helpful for you.
 
-* (Optional) Create an R package with your own customized `gpplot2` theme! Write a post on your website about why you made the choices you did for the theme. See the *Building an R package* and *Custom `ggplot2` themes* [resources](https://advanced-ds-in-r.netlify.app/resources.html). 
+* (Optional) Create an R package with your own customized `gpplot2` theme! Write a post on your website about why you made the choices you did for the theme. See the *Building an R package* and *Custom `ggplot2` themes* [resources](https://advanced-ds-in-r.netlify.app/resources.html).
 
 ## Machine Learning review and intro to `tidymodels`
 
