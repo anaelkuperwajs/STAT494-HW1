@@ -150,8 +150,6 @@ prep(hotels_recipe) %>%
   juice()
 ```
 
-
-
 5. In this step we will set up a LASSO model and workflow.
 
 * In general, why would we want to use LASSO instead of regular logistic regression? (HINT: think about what happens to the coefficients).  
