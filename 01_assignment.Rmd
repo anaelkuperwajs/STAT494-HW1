@@ -43,9 +43,13 @@ Once you've chosen that, you might want to look through some of the other *Build
 
 **Tasks**:
 
-* Include a link to your website below. (If anyone does not want to post a website publicly, please talk to me and we will find a different solution).  
+* Include a link to your website below. (If anyone does not want to post a website publicly, please talk to me and we will find a different solution).
+
+Website link:
 
 * Listen to at least the first 20 minutes of "Building a Career in Data Science, Chapter 4: Building a Portfolio". Go to the main [podcast website](https://podcast.bestbook.cool/) and navigate to a podcast provider that works for you to find that specific episode. Write 2-3 sentences reflecting on what they discussed and why creating a website might be helpful for you.
+
+REFLECTION
 
 * (Optional) Create an R package with your own customized `gpplot2` theme! Write a post on your website about why you made the choices you did for the theme. See the *Building an R package* and *Custom `ggplot2` themes* [resources](https://advanced-ds-in-r.netlify.app/resources.html).
 
@@ -56,13 +60,53 @@ Read through and follow along with the [Machine Learning review with an intro to
 **Tasks**:
 
 1. Read about the hotel booking data, `hotels`, on the [Tidy Tuesday page](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-02-11/readme.md) it came from. There is also a link to an article from the original authors. The outcome we will be predicting is called `is_canceled`. 
-  - Without doing any analysis, what are some variables you think might be predictive and why?  
-  _ What are some problems that might exist with the data? You might think about how it was collected and who did the collecting.  
-  - If we construct a model, what type of conclusions will be able to draw from it?  
+  - Without doing any analysis, what are some variables you think might be predictive and why?
   
-2. Create some exploratory plots or table summaries of the data, concentrating most on relationships with the response variable. Keep in mind the response variable is numeric, 0 or 1. You may want to make it categorical (you also may not). Be sure to also examine missing values or other interesting values.  
+I believe previous_cancellations and previous_bookings_not_canceled coudl be indicative because they both have data on a customer's history, and past actions can help predict future actions. In addition, total_of_special_requests could be predictive because different types of requests might be more likely to cancel, especially if some have higher cancellation fees. Furthermore, the longer in advance a booking is made, the more likely plans are to change, so lead_time could be predictive. Another thing that could be indicative is the customer_type, because some types of customers might be more reliable than others. Lastly, babies could be predictive because it is more likley that plans might change when someone has a baby.
+  
+  _ What are some problems that might exist with the data? You might think about how it was collected and who did the collecting.
+  
+A lack of variety in the hotels could be problematic because it is less generalizable. This dataset only used two hotels. The data also comes from an open hotel booking demand dataset, rather than a hotel itself, which might indicate some differences. In addition, some of the data is private, not all of it is public, which might affect the accessibility later on.
+  
+  - If we construct a model, what type of conclusions will be able to draw from it?
+  
+The model might help us figure out what are the best predictors of if a booking will be canceled. It could also predict the probability of a specific booking being canceled, which might help hotels predict profit and budget more effectively.
+  
+2. Create some exploratory plots or table summaries of the data.
 
-3. First, we will do a couple things to get the data ready, including making the outcome a factor (needs to be that way for logistic regression), removing the year variable and some reservation status variables, and removing missing values (not NULLs but true missing values). Split the data into a training and test set, stratifying on the outcome variable, `is_canceled`. Since we have a lot of data, we're going to split the data 50/50 between training and test. I have already `set.seed()` for you. Be sure to use `hotels_mod` in the splitting.
+One thing that stands out is that babies and previous_cancellations has a lot of entries at the value 0 and very few other than 0.
+
+```{r}
+ggplot(hotels, aes(x = previous_cancellations)) +
+  geom_bar()
+
+ggplot(hotels, aes(x = total_of_special_requests)) +
+  geom_bar()
+
+ggplot(hotels, aes(x = babies)) +
+  geom_bar()
+
+ggplot(hotels, aes(x = previous_cancellations, y = total_of_special_requests)) +
+  geom_jitter()
+
+ggplot(hotels, aes(x = previous_cancellations, y = as.factor(total_of_special_requests))) +
+  geom_boxplot()
+
+hotels %>% 
+  select(where(is.numeric)) %>% 
+  pivot_longer(cols = everything(),
+               names_to = "variable", 
+               values_to = "value") %>% 
+  ggplot(aes(x = value)) +
+  geom_histogram(bins = 30) +
+  facet_wrap(vars(variable), 
+             scales = "free")
+```
+
+
+3. First, we will do a couple things to get the data ready, including making the outcome a factor (needs to be that way for logistic regression), removing the year variable and some reservation status variables, and removing missing values (not NULLs but true missing values).
+
+Split the data into a training and test set, stratifying on the outcome variable, `is_canceled`. Since we have a lot of data, we're going to split the data 50/50 between training and test. I have already `set.seed()` for you. Be sure to use `hotels_mod` in the splitting.
 
 ```{r}
 hotels_mod <- hotels %>% 
@@ -76,18 +120,37 @@ hotels_mod <- hotels %>%
   select(-n_miss_all)
 
 set.seed(494)
+hotels_split <- initial_split(hotels_mod, prop = 1/2, strata = is_canceled)
+hotels_split
+
+hotels_training <- training(hotels_split)
+hotels_testing <- testing(hotels_split)
 ```
 
 4. In this next step, we are going to do the pre-processing. Usually, I won't tell you exactly what to do here, but for your first exercise, I'll tell you the steps. 
 
-* Set up the recipe with `is_canceled` as the outcome and all other variables as predictors (HINT: `~.`).  
-* Use a `step_XXX()` function or functions (I think there are other ways to do this, but I found `step_mutate_at()` easiest) to create some indicator variables for the fol`lowing variables: `children`, `babies`, and `previous_cancellations`. So, the new variable should be a 1 if the original is more than 0 and 0 otherwise. Make sure you do this in a way that accounts for values that may be larger than any we see in the dataset.  
-* For the `agent` and `company` variables, make new indicator variables that are 1 if they have a value of `NULL` and 0 otherwise. 
+* Set up the recipe with `is_canceled` as the outcome and all other variables as predictors (HINT: `~.`).
+* Use a `step_XXX()` function or functions (I think there are other ways to do this, but I found `step_mutate_at()` easiest) to create some indicator variables for the following variables: `children`, `babies`, and `previous_cancellations`. So, the new variable should be a 1 if the original is more than 0 and 0 otherwise. Make sure you do this in a way that accounts for values that may be larger than any we see in the dataset.
+* For the `agent` and `company` variables, make new indicator variables that are 1 if they have a value of `NULL` and 0 otherwise.
 * Use `fct_lump_n()` to lump together countries that aren't in the top 5 most occurring. 
 * If you used new names for some of the new variables you created, then remove any variables that are no longer needed. 
 * Use `step_normalize()` to center and scale all the non-categorical predictor variables. (Do this BEFORE creating dummy variables. When I tried to do it after, I ran into an error - I'm still investigating why.)
 * Create dummy variables for all factors/categorical predictor variables (make sure you have `-all_outcomes()` in this part!!).  
 * Use the `prep()` and `juice()` functions to apply the steps to the training data just to check that everything went as planned.
+
+```{r}
+hotels_recipe <- recipe(is_canceled ~ ., data = hotels_training) %>%
+  step_mutate_at(children, babies, previous_cancellations, fn = ~as.factor((. > 0))) %>% #if something breaks down change to as.numeric
+  step_mutate_at(agent, company, fn = ~as.factor(. == "NULL")) %>% 
+  step_mutate(country = fct_lump_n(country, 5)) %>% 
+  step_normalize(all_numeric(), -all_outcomes()) %>% 
+  step_dummy(all_nominal(), -all_outcomes())
+
+prep(hotels_recipe) %>% 
+  juice()
+```
+
+
 
 5. In this step we will set up a LASSO model and workflow.
 
