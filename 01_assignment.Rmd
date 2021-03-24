@@ -271,7 +271,10 @@ hotels_lasso_test %>%
 preds <- collect_predictions(hotels_lasso_test)
 preds
 
-conf_mat(preds)
+conf_mat(preds, truth = is_canceled, estimate = .pred_class)
+
+ggplot(preds, aes(x = .pred_1, fill = is_canceled)) +
+  geom_density(alpha = .5, color = NA)
 ```
 
 
