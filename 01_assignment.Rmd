@@ -188,8 +188,7 @@ hotels_lasso_wf
 * Use the `collect_metrics()` function to collect all the metrics from the previous step and create a plot with the accuracy on the y-axis and the penalty term on the x-axis. Put the x-axis on the log scale.  
 * Use the `select_best()` function to find the best tuning parameter, fit the model using that tuning parameter to the entire training set (HINT: `finalize_workflow()` and `fit()`), and display the model results using `pull_workflow_fit()` and `tidy()`. Are there some variables with coefficients of 0?
 
-FINISH ANSWER
-Yes, a  few.
+Yes, there are a few coefficients, including arrival_date_month_September, market_segment_Groups, market_segment_Undefined, distribution_channel_Undefined, and assigned_room_type_L.
 
 ```{r}
 set.seed(494) # for reproducibility
@@ -240,19 +239,26 @@ hotels_lasso_final_mod %>%
 
 * Create a variable importance graph. Which variables show up as the most important? Are you surprised?
 
-ANSWER
+The variables that show up as most important are reserved_room_type_P, deposit_type_Non.Refund, assigned_room_type_I, previous_cancellations_TRUE, followed by a few different assigned or reserved room types. I am surprised, because many of the variables that I thought would be important are not on the list at all, and I did not expect assigned or reserved room type to be that important. The deposit type and the previous cancellations as important variables is understandable.
 
 * Use the `last_fit()` function to fit the final model and then apply it to the testing data. Report the metrics from the testing data using the `collet_metrics()` function. How do they compare to the cross-validated metrics?
 
-ANSWER
+The estimate is 0.8154055, while there are ten values for cross-validated mean, which range from 0.6296048 to six values of 0.8136130. The majority are similar to the testing data metrics, only off by approximately 0.002.
 
 * Use the `collect_predictions()` function to find the predicted probabilities and classes for the test data. Save this to a new dataset called `preds`. Then, use the `conf_mat()` function from `dials` (part of `tidymodels`) to create a confusion matrix showing the predicted classes vs. the true classes. What is the true positive rate (sensitivity)? What is the true negative rate (specificity)? See this [Wikipedia](https://en.wikipedia.org/wiki/Confusion_matrix) reference if you (like me) tend to forget these definitions.
 
-ANSWER
+The sensitivity (true positive rate) is = 14377 / (14377 + 7733) = 0.6502
+The specificity (true negative rate) is = 34297 / (34297 + 3286) = 0.9126
+
+The value of 1 means the booking is canceled, so that would be the positive value. The negative value is 0, when the booking is not canceled.
 
 * Use the `preds` dataset you just created to create a density plot of the predicted probabilities of canceling (the variable is called `.pred_1`), filling by `is_canceled`. Use an `alpha = .5` and `color = NA` in the `geom_density()`. Answer these questions: a. What would this graph look like for a model with an accuracy that was close to 1? b. Our predictions are classified as canceled if their predicted probability of canceling is greater than .5. If we wanted to have a high true positive rate, should we make the cutoff for predicted as canceled higher or lower than .5? c. What happens to the true negative rate if we try to get a higher true positive rate? 
 
-ANSWER
+a. If the accuracy was higher than the two parts of the graph would overlap less.
+
+b. If we wanted a high true positive rate, we should make the cutoff for predicted as canceled lower than .5.
+
+c. The true negative rate would be worse if we aim for a higher true positive rate.
 
 ```{r}
 hotels_lasso_final_mod %>% 
@@ -280,13 +286,11 @@ ggplot(preds, aes(x = .pred_1, fill = is_canceled)) +
 
 8. Let's say that this model is going to be applied to bookings 14 days in advance of their arrival at each hotel, and someone who works for the hotel will make a phone call to the person who made the booking. During this phone call, they will try to assure that the person will be keeping their reservation or that they will be canceling in which case they can do that now and still have time to fill the room. How should the hotel go about deciding who to call? How could they measure whether it was worth the effort to do the calling? Can you think of another way they might use the model? 
 
-
+One way of deciding who would be best to call is by looking the at important variables that the model suggested. While some of the variables didn't necessarily make sense, prioritizing calling people who have had previous cancellations or did not have to place a deposit, since that might be likely to indicate future cancellations. Another way would be to raise the true negative rate by increasing the cutoff so that the effort is more directed towards people who are more likely to cancel a booking. They could measure if the effort was worth it by seeing how many people still canceled after the phone call and how many canceled during the phone call vs the people who did not get a phone call. Since the model indicates which variables best predict a future cancellation or not and many of the important predictors were about assigned or reserved room type, it could indicate which rooms are considered more valuable or less valuable by the guests. This could help determine which are the most valued room types. Another way to use the model would be to know which variables do not predict cancellations and aren't as helpful.
 
 9. How might you go about questioning and evaluating the model in terms of fairness? Are there any questions you would like to ask of the people who collected the data? 
 
-
-
-
+Possible ways of evaluating fairness of a model is to check how identity plays a role in the model. For example, looking to see if there are differences in accuracy when looking at female vs male guests. If the accuracy is much higher for male guests, there might be an issue in fairness. A few in this dataset that might lead to biased predictions is country, customer_type, babies or children, or company. If the model is biased towards people affilitated with a specific company, then it might lead to unfair treatment of individual guests. I would want to ask the people who collected the data if integrity, fairness, or bias was on their mind when they collected the data. Furthermore, understanding how the data was collected and how the sample of hotels was chosen would help. There were only two hotels in the dataset, which already leads to some problems with generalizability.
 
 
 ## Bias and Fairness
