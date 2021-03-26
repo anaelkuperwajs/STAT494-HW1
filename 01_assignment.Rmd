@@ -1,5 +1,6 @@
 ---
 title: 'Assignment #1'
+author: "Anael Kuperwajs Cohen"
 output: 
   html_document:
     toc: true
@@ -9,7 +10,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-#knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
 ```
 
 ```{r libraries}
@@ -64,7 +65,7 @@ Read through and follow along with the [Machine Learning review with an intro to
   
 I believe previous_cancellations and previous_bookings_not_canceled could be indicative because they both have data on a customer's history, and past actions can help predict future actions. In addition, total_of_special_requests could be predictive because different types of requests might be more likely to cancel, especially if some have higher cancellation fees. Furthermore, the longer in advance a booking is made, the more likely plans are to change, so lead_time could be predictive. Another thing that could be indicative is the customer_type, because some types of customers might be more reliable than others. Lastly, babies could be predictive because it is more likely that plans might change when someone has a baby.
   
-  _ What are some problems that might exist with the data? You might think about how it was collected and who did the collecting.
+  - What are some problems that might exist with the data? You might think about how it was collected and who did the collecting.
   
 A lack of variety in the hotels could be problematic because it is less generalizable. This dataset only used two hotels. The data also comes from an open hotel booking demand dataset, rather than a hotel itself, which might indicate some differences. In addition, some of the data is private, not all of it is public, which might affect the accessibility later on.
   
@@ -248,6 +249,7 @@ The estimate is 0.8154055, while there are ten values for cross-validated mean, 
 * Use the `collect_predictions()` function to find the predicted probabilities and classes for the test data. Save this to a new dataset called `preds`. Then, use the `conf_mat()` function from `dials` (part of `tidymodels`) to create a confusion matrix showing the predicted classes vs. the true classes. What is the true positive rate (sensitivity)? What is the true negative rate (specificity)? See this [Wikipedia](https://en.wikipedia.org/wiki/Confusion_matrix) reference if you (like me) tend to forget these definitions.
 
 The sensitivity (true positive rate) is = 14377 / (14377 + 7733) = 0.6502
+
 The specificity (true negative rate) is = 34297 / (34297 + 3286) = 0.9126
 
 The value of 1 means the booking is canceled, so that would be the positive value. The negative value is 0, when the booking is not canceled.
