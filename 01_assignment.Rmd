@@ -45,7 +45,7 @@ Once you've chosen that, you might want to look through some of the other *Build
 
 * Include a link to your website below. (If anyone does not want to post a website publicly, please talk to me and we will find a different solution).
 
-Website link:
+Website link: https://clever-shaw-7eff52.netlify.app/
 
 * Listen to at least the first 20 minutes of "Building a Career in Data Science, Chapter 4: Building a Portfolio". Go to the main [podcast website](https://podcast.bestbook.cool/) and navigate to a podcast provider that works for you to find that specific episode. Write 2-3 sentences reflecting on what they discussed and why creating a website might be helpful for you.
 
